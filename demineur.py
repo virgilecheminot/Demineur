@@ -3,6 +3,8 @@ from colorama import Fore, Back, Style
 
 def creerGrille(N,M,v=0): return [[v for j in range(M)] for i in range(N)]
 
+def creerDrapeau(N,M,v=0): return [[v for j in range(M)] for i in range(N)]
+
 def placerMines(grille,N,M,X,l,c):
     cpt = 0
     while cpt != X:
@@ -68,7 +70,7 @@ def compteMinesVoisines(grille,l,c):
         nbVoisines += grille[l-1][c-1]
     return nbVoisines
 
-def afficheJeu(grille,casesD):
+def afficheJeu(grille,casesD,drapeau):
     print(Style.RESET_ALL,end='')
     print(' '*3,end='')
     for i in range(len(grille[0])):
@@ -99,6 +101,10 @@ def afficheJeu(grille,casesD):
                     elif val >= 5:
                         print(Fore.MAGENTA + str(val), end=sepa2)
                 print(Style.RESET_ALL, end='')
+
+            elif drapeau[l][c]:
+                print(Back.WHITE + Fore.BLACK + '!', end='')
+                print(Style.RESET_ALL, end=sepa2)
 
             else:
                 print('?',end=sepa2)
@@ -218,6 +224,7 @@ def decimator3000(grille,casesD,l,c):
 N = int(input('Nombre de lignes : '))
 M = int(input('Nombre de colonnes : '))
 grille = creerGrille(N,M)
+drapeau = creerDrapeau(N,M)
 
 X = int(input('Nombre de mines : '))
 while X >= N*M:
@@ -227,7 +234,7 @@ while X >= N*M:
 nbCoups = 1
 print('\nCoup numéro',nbCoups)
 casesD = [[False for j in range(M)] for i in range(N)]
-afficheJeu(grille,casesD)
+afficheJeu(grille,casesD,drapeau)
 l,c=getCoords(casesD,N,M)
 casesD[l][c] = True
 placerMines(grille,N,M,X,l,c)
@@ -240,25 +247,32 @@ gagne = victoire(grille,casesD,N,M)
 
 ## Tour de jeu
 while not gagne and not perdu:
-    nbCoups += 1
     print('\nCoup numéro', nbCoups)
-    afficheJeu(grille,casesD)
+    afficheJeu(grille,casesD,drapeau)
     l,c=getCoords(casesD,N,M)
-    casesD[l][c] = True
-    if testMine(grille,l,c):
-        perdu = True
-    if compteMinesVoisines(grille,l,c) == 0 and not perdu:
-        decimator3000(grille,casesD,l,c)
-    gagne = victoire(grille,casesD,N,M)
+    drap = input('Placer un drapeau ?\n⏎ pour ignorer, 1 pour placer, 0 pour suprr. : ')
+    if drap == '':
+        nbCoups += 1
+        casesD[l][c] = True
+        if testMine(grille,l,c):
+            perdu = True
+        if compteMinesVoisines(grille,l,c) == 0 and not perdu:
+            decimator3000(grille,casesD,l,c)
+        gagne = victoire(grille,casesD,N,M)
+    elif drap == '1':
+        drapeau[l][c] = 1
+    elif drap == '0':
+        drapeau[l][c] = 0
+        
 
 if gagne:
     print('\nBravo, tu gagnes en',nbCoups,'coups !\n')
     casesD = [[True for j in range(M)] for i in range(N)]
-    afficheJeu(grille,casesD)
+    afficheJeu(grille,casesD,drapeau)
 
 else:
     print('\nPerdu, touché une mine !')
     print('\nTon jeu :')
-    afficheJeu(grille,casesD)
+    afficheJeu(grille,casesD,drapeau)
     print('\nLa solution était :')
     afficheSolution(grille)
