@@ -1,5 +1,5 @@
 import random as rd
-from colorama import Fore, Style
+from colorama import Fore, Back, Style
 
 def creerGrille(N,M,v=0): return [[v for j in range(M)] for i in range(N)]
 
@@ -15,12 +15,22 @@ def placerMines(grille,N,M,X,l,c):
         cpt += 1
 
 def afficheSolution(grille):
-    for i in grille:
-        for j in i:
-            if j:
-                print('*',end=' ')
+    print(Style.RESET_ALL,end='')
+    print(' '*3,end='')
+    for i in range(len(grille[0])):
+        sepa = ' '*(3-len(str(i+1)))
+        print(i+1,end=sepa)
+    print('\n')
+    for l in range(len(grille)):
+        sepa = ' '*(3-len(str(l+1)))
+        print(l+1,end=sepa)
+        for c in range(len(grille[l])):
+            sepa2 = ' '*2
+            if grille[l][c]:
+                print(Back.RED+'*',end='')
+                print(Style.RESET_ALL,end=sepa2)
             else:
-                print('-',end=' ')
+                print('-',end=sepa2)
         print('')
 
 def testMine(grille,l,c):
@@ -62,33 +72,36 @@ def afficheJeu(grille,casesD):
     print(Style.RESET_ALL,end='')
     print(' '*3,end='')
     for i in range(len(grille[0])):
-        print(i+1,end=' ')
+        sepa = ' '*(3-len(str(i+1)))
+        print(i+1,end=sepa)
     print('\n')
     for l in range(len(grille)):
         sepa = ' '*(3-len(str(l+1)))
         print(l+1,end=sepa)
         for c in range(len(grille[l])):
+            sepa2 = ' '*2
             if casesD[l][c]:
                 if grille[l][c]:
-                    print('*',end=' ')
+                    print(Back.RED+'*',end='')
+                    print(Style.RESET_ALL, end=sepa2)
                 else:
                     val = compteMinesVoisines(grille,l,c)
                     if val == 0:
-                        print(Fore.BLUE + str(val), end=' ')
+                        print(Fore.BLUE + str(val), end=sepa2)
                     elif val == 1:
-                        print(Fore.CYAN + str(val), end=' ')
+                        print(Fore.CYAN + str(val), end=sepa2)
                     elif val == 2:
-                        print(Fore.GREEN + str(val), end=' ')
+                        print(Fore.GREEN + str(val), end=sepa2)
                     elif val == 3:
-                        print(Fore.YELLOW + str(val), end=' ')
+                        print(Fore.YELLOW + str(val), end=sepa2)
                     elif val == 4:
-                        print(Fore.RED + str(val), end=' ')
+                        print(Fore.RED + str(val), end=sepa2)
                     elif val >= 5:
-                        print(Fore.MAGENTA + str(val), end=' ')
-                    print(Style.RESET_ALL, end='')
+                        print(Fore.MAGENTA + str(val), end=sepa2)
+                print(Style.RESET_ALL, end='')
 
             else:
-                print('?',end=' ')
+                print('?',end=sepa2)
         print(Style.RESET_ALL)
 
 def getCoords(casesD,N,M):
@@ -212,7 +225,7 @@ while X >= N*M:
 
 ## Premier coup
 nbCoups = 1
-print('\nCou numéro',nbCoups)
+print('\nCoup numéro',nbCoups)
 casesD = [[False for j in range(M)] for i in range(N)]
 afficheJeu(grille,casesD)
 l,c=getCoords(casesD,N,M)
