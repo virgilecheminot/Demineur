@@ -10,7 +10,10 @@ def placerMines(grille,N,M,X,l,c):
     while cpt != X:
         ligne = rd.randint(0,N-1)
         case = rd.randint(0,M-1)
-        while (ligne == l and case == c) or grille[ligne][case] == 1:
+        while (ligne == l and case == c) or grille[ligne][case] == 1 or (
+        ligne == l and case == c+1) or (ligne == l and case == c-1) or (ligne == l-1 and case == c-1) or (
+        ligne == l-1 and case == c) or (ligne == l-1 and case == c+1) or (ligne == l+1 and case == c-1) or (
+        ligne == l+1 and case == c) or (ligne == l+1 and case == c+1):
             ligne = rd.randint(0,N-1)
             case = rd.randint(0,M-1)
         grille[ligne][case] = 1
@@ -114,11 +117,17 @@ def getCoords(casesD,N,M):
     print('À toi de jouer !')
     casePrise = True
     while casePrise:
-        l = int(input("Ligne ? "))-1
-        c = int(input('Colonne ? '))-1
-        while not 0<=l<=N-1:
+        l = input("Ligne ? ")
+        while not l:
+            l = input("Ligne ?")
+        l = int(l)-1
+        c = input('Colonne ? ')
+        while not c:
+            c = input("Colonne ?")
+        c = int(c)-1
+        while (not 0<=l<=N-1):
             l = int(input('0 ≤ ligne <',N,'svp ? '))
-        while not 0<=c<=M-1:
+        while (not 0<=c<=M-1):
             c = int(input('0 ≤ colonne <',M,'svp ? '))
         if casesD[l][c]:
             print('Case déjà dévoilée, recommencez')
@@ -227,7 +236,7 @@ grille = creerGrille(N,M)
 drapeau = creerDrapeau(N,M)
 
 X = int(input('Nombre de mines : '))
-while X >= N*M:
+while X >= N*M-8:
     X = int(input('Nombre de mines : '))
 
 ## Premier coup
