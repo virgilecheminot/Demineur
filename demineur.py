@@ -46,31 +46,10 @@ def testMine(grille,l,c):
 
 def compteMinesVoisines(grille,l,c):
     nbVoisines = 0
-    haut, bas, gauche, droite = False,False,False,False
-    if l==0:
-        haut = True
-    if l==len(grille)-1:
-        bas = True
-    if c==0:
-        gauche = True
-    if c==len(grille[l])-1:
-        droite = True
-    if not haut:
-        nbVoisines += grille[l-1][c]
-    if not haut and not droite:
-        nbVoisines += grille[l-1][c+1]
-    if not droite:
-        nbVoisines += grille[l][c+1]
-    if not droite and not bas:
-        nbVoisines += grille[l+1][c+1]
-    if not bas:
-        nbVoisines += grille[l+1][c]
-    if not bas and not gauche:
-        nbVoisines += grille[l+1][c-1]
-    if not gauche:
-        nbVoisines += grille[l][c-1]
-    if not gauche and not haut:
-        nbVoisines += grille[l-1][c-1]
+    for i in range(l-1,l+2):
+        for j in range(c-1,c+2):
+            if i >= 0 and i < len(grille) and j >=0 and j<len(grille[l]):
+                nbVoisines += grille[i][j]
     return nbVoisines
 
 def afficheJeu(grille,casesD,drapeau):
