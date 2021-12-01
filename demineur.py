@@ -3,8 +3,6 @@ from colorama import Fore, Back, Style
 
 def creerGrille(N,M,v=0): return [[v for j in range(M)] for i in range(N)]
 
-def creerDrapeau(N,M,v=0): return [[v for j in range(M)] for i in range(N)]
-
 def placerMines(grille,N,M,X,l,c):
     cpt = 0
     while cpt != X:
@@ -155,7 +153,7 @@ def decimator3000(grille,casesD,l,c):
 N = int(input('Nombre de lignes : '))
 M = int(input('Nombre de colonnes : '))
 grille = creerGrille(N,M)
-drapeau = creerDrapeau(N,M)
+drapeau = creerGrille(N,M)
 
 X = int(input('Nombre de mines : '))
 while X >= N*M-8:
