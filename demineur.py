@@ -122,71 +122,14 @@ def victoire(grille,casesD,N,M):
     return True
 
 def decimateCase(grille,casesD,l,c,add,listeToDecimate):
-    haut, bas, gauche, droite = False,False,False,False
-    if l==0:
-        haut = True
-    if l==len(grille)-1:
-        bas = True
-    if c==0:
-        gauche = True
-    if c==len(grille[l])-1:
-        droite = True
-    
-    if not haut:
-        add.append([l-1,c])
-        if compteMinesVoisines(grille,l-1,c) == 0 and not grille[l-1][c]:
-            if not casesD[l-1][c]:
-                listeToDecimate.append([l-1,c])
-            casesD[l-1][c] = True
-
-    if not haut and not droite:
-        add.append([l-1,c+1])
-        if compteMinesVoisines(grille,l-1,c+1) == 0 and not grille[l-1][c+1]:
-            if not casesD[l-1][c+1]:
-                listeToDecimate.append([l-1,c+1])
-            casesD[l-1][c+1] = True
-
-    if not droite:
-        add.append([l,c+1])
-        if compteMinesVoisines(grille,l,c+1) == 0 and not grille[l][c+1]:
-            if not casesD[l][c+1]:
-                listeToDecimate.append([l,c+1])
-            casesD[l][c+1] = True
-
-    if not droite and not bas:
-        add.append([l+1,c+1])
-        if compteMinesVoisines(grille,l+1,c+1) == 0 and not grille[l+1][c+1]:
-            if not casesD[l+1][c+1]:
-                listeToDecimate.append([l+1,c+1])
-            casesD[l+1][c+1] = True
-
-    if not bas:
-        add.append([l+1,c])
-        if compteMinesVoisines(grille,l+1,c) == 0 and not grille[l+1][c]:
-            if not casesD[l+1][c]:
-                listeToDecimate.append([l+1,c])
-            casesD[l+1][c] = True
-
-    if not bas and not gauche:
-        add.append([l+1,c-1])
-        if compteMinesVoisines(grille,l+1,c-1) == 0 and not grille[l+1][c-1]:
-            if not casesD[l+1][c-1]:
-                listeToDecimate.append([l+1,c-1])
-            casesD[l+1][c-1] = True
-
-    if not gauche:
-        add.append([l,c-1])
-        if compteMinesVoisines(grille,l,c-1) == 0 and not grille[l][c-1]:
-            if not casesD[l][c-1]:
-                listeToDecimate.append([l,c-1])
-            casesD[l][c-1] = True
-
-    if not gauche and not haut:
-        add.append([l-1,c-1])
-        if compteMinesVoisines(grille,l-1,c-1) == 0 and not grille[l-1][c-1]:
-            if not casesD[l-1][c-1]:
-                listeToDecimate.append([l-1,c-1])
-            casesD[l-1][c-1] = True
+    for i in range(l-1,l+2):
+        for j in range(c-1,c+2):
+            if i >= 0 and i < len(grille) and j >=0 and j < len(grille[l]):
+                add.append([i,j])
+                if compteMinesVoisines(grille,i,j) == 0 and not grille[i][j]:
+                    if not casesD[i][j]:
+                        listeToDecimate.append([i,j])
+                casesD[i][j] = True
 
 def decimator3000(grille,casesD,l,c):
     add = []
